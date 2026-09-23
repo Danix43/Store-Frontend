@@ -2,6 +2,7 @@ import { useState } from 'react'
 import StorePage from './pages/StorePage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
+import DashboardPage from './pages/DashboardPage'
 
 export type Page = 'store' | 'dashboard' | 'login' | 'register'
 
