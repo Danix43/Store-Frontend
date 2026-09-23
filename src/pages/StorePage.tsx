@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { CartItem, Page, User } from "../App"
 import Navbar from "../components/Navbar"
+import { api } from "../utilities/WebRequests"
 
 interface Props {
     navigate: (p: Page) => void
@@ -8,6 +9,16 @@ interface Props {
     cart: CartItem[]
     addToCart: (item: Omit<CartItem, "qty">) => void
     logout: () => void
+}
+
+export interface Item {
+    id: number
+    name: string
+    price: number
+    qty: number
+    image: string
+    category: string
+    tag: string
 }
 
 const testProds = [
@@ -27,6 +38,7 @@ const categories = [
     "Category 3",
 ]
 
+
 export default function StorePage({
     navigate,
     user,
@@ -35,13 +47,31 @@ export default function StorePage({
     logout,
 }: Props) {
 
+    const [products, setProducts] = useState<Item[]>([])
     const [activeCategory, setActiveCategory] = useState("All")
     const [addedIds, setAddedIds] = useState<number[]>([])
 
+    useEffect(
+        () => {
+            const fetchItems = async () => {
+                try {
+                    const { data } = await api.get("/items/all")
+                    setProducts(data)
+                    console.log("Items fetched from api")
+                    console.log(data);
+                } catch (error) {
+                    console.error("Error fetching the item from api");
+                    console.error(error);
+                }
+            }
+            fetchItems()
+        }, [])
+
     const filtered =
         activeCategory === "All"
-            ? testProds
-            : testProds.filter((p) => p.category === activeCategory)
+            ? products
+            : products.filter((p) => p.category === activeCategory)
+
 
     const handleAdd = (product: typeof testProds[0]) => {
         addToCart({
