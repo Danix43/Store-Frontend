@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import StorePage from './pages/StorePage'
+import RegisterPage from './pages/RegisterPage'
 
 export type Page = 'store' | 'dashboard' | 'login' | 'register'
 
