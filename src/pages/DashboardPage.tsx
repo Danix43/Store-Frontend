@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { CartItem, Page, User } from "../App"
+import type { Page, User } from "../App"
 import Navbar from "../components/Navbar"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createItemQueryOptions } from "../api/Utilities"
@@ -8,7 +8,7 @@ import { Categories, type Item } from "./StorePage"
 interface Props {
     navigate: (page: Page) => void
     user: User | null
-    cart: CartItem[]
+    cart: Item[]
     logout: () => void
 }
 

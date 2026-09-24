@@ -1,9 +1,10 @@
-import type { CartItem, Page, User } from "../App"
+import type { Page, User } from "../App"
+import type { Item } from "../pages/StorePage"
 
 interface NavbarProps {
     navigate: (p: Page) => void
     user: User | null
-    cart: CartItem[]
+    cart: Item[]
     logout: () => void
     currentPage: Page
 }
@@ -58,7 +59,9 @@ export default function Navbar({
                 </nav>
 
                 <div className="flex items-center gap-4">
-                    <button className="relative text-sm transition-colors"
+                    <button
+                        onClick={() => navigate("cart")}
+                        className="relative text-sm transition-colors"
                         style={{ color: "#9a9080" }}>
                         <svg
                             width="20"

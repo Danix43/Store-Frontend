@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { CartItem, Page, User } from "../App"
+import type { Page, User } from "../App"
 import Navbar from "../components/Navbar"
 import { createItemQueryOptions } from "../api/Utilities"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -7,8 +7,8 @@ import { useSuspenseQuery } from "@tanstack/react-query"
 interface Props {
     navigate: (p: Page) => void
     user: User | null
-    cart: CartItem[]
-    addToCart: (item: Omit<CartItem, "qty">) => void
+    cart: Item[]
+    addToCart: (item: Omit<Item, "qty">) => void
     logout: () => void
 }
 
@@ -61,10 +61,11 @@ export default function StorePage({
 
     const handleAdd = (product: typeof data[0]) => {
         addToCart({
-            id: product.sku,
+            sku: product.sku,
             name: product.name,
+            category: product.category,
             price: product.price,
-            image: product.image,
+            imageLink: product.imageLink,
         })
         setAddedIds((prev) => [...prev, product.sku])
         setTimeout(() => setAddedIds((prev) => prev.filter((sku) => sku !== product.sku)), 1500)
