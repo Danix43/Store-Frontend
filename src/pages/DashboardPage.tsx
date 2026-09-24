@@ -1,6 +1,9 @@
 import { useState } from "react"
 import type { CartItem, Page, User } from "../App"
 import Navbar from "../components/Navbar"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { createItemQueryOptions } from "../api/Utilities"
+import { Categories, type Item } from "./StorePage"
 
 interface Props {
     navigate: (page: Page) => void
@@ -9,35 +12,6 @@ interface Props {
     logout: () => void
 }
 
-interface Product {
-    sku: string
-    name: string
-    category: string
-    price: number
-    stock: number
-    tag: string
-    description: string
-}
-
-const testProds: Product[] = [
-    {
-        sku: "SKU-01",
-        name: "Item1",
-        category: "Category 1",
-        price: 90,
-        stock: 5,
-        tag: "Tag 1",
-        description: "This is the description for the Item 1"
-    }, {
-        sku: "SKU-02",
-        name: "Item2",
-        category: "Category 2",
-        price: 91,
-        stock: 1,
-        tag: "Tag 2",
-        description: "This is the description for the Item 2"
-    },
-]
 
 // TODO add support for collections for products in orders
 const testOrders = [
@@ -76,8 +50,7 @@ const testOrders = [
 
 const weeklyRevenue = [42, 68, 55, 82, 97, 74, 110]
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sun", "Sun"]
-const categories = ["Category 1", "Category 2", "Category 3"]
-const tags = ["", "Tag 1", "Tag 2", "Tag 3"]
+const categories = Categories
 
 
 const statusStyle: Record<string, { bg: string, color: string }> = {
@@ -92,17 +65,17 @@ function EditModal({
     onDelete,
     onClose,
 }: {
-    product: Product,
-    onSave: (p: Product) => void,
+    product: Item,
+    onSave: (p: Item) => void,
     onDelete: (sku: string) => void,
     onClose: () => void
 }) {
 
-    const [form, setForm] = useState<Product>({ ...product })
+    const [form, setForm] = useState<Item>({ ...product })
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [saved, setSaved] = useState(false)
 
-    const set = <K extends keyof Product>(k: K, v: Product[K]) => setForm((prev) => ({ ...prev, [k]: v }))
+    const set = <K extends keyof Item>(k: K, v: Item[K]) => setForm((prev) => ({ ...prev, [k]: v }))
 
     const handleSave = () => {
         onSave(form)
@@ -254,59 +227,13 @@ function EditModal({
                                 min={0}
                                 className={inputCls}
                                 style={inputStyle}
-                                value={form.stock}
-                                onChange={(e) => set("stock", Number(e.target.value))}
+                                value={form.qty}
+                                onChange={(e) => set("qty", Number(e.target.value))}
                                 onFocus={(e) => (e.target.style.borderColor = "#d4a853")}
                                 onBlur={(e) => (e.target.style.borderColor = "#2a2620")}
                             />
                         </div>
 
-                        <div className="col-span-2">
-                            <label
-                                className="block text-xs uppercase tracking-wider mb-1.5"
-                                style={{ color: "#7a7060" }}
-                            >
-                                Tag
-                            </label>
-                            <div className="flex gap-2 flex-wrap">
-                                {tags.map((t) => (
-                                    <button
-                                        key={t || "none"}
-                                        onClick={() => set("tag", t)}
-                                        className="px-3 py-1 text-xs rounded-full transition-all"
-                                        style={
-                                            form.tag === t
-                                                ? {
-                                                    background: "#d4a853",
-                                                    color: "#0c0b09",
-                                                    fontWeight: 600,
-                                                }
-                                                : { border: "1px solid #2a2620", color: "#7a7060" }
-                                        }
-                                    >
-                                        {t || "None"}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="col-span-2">
-                            <label
-                                className="block text-xs uppercase tracking-wider mb-1.5"
-                                style={{ color: "#7a7060" }}
-                            >
-                                Description
-                            </label>
-                            <textarea
-                                rows={3}
-                                className={inputCls}
-                                style={{ ...inputStyle, resize: "none" }}
-                                value={form.description}
-                                onChange={(e) => set("description", e.target.value)}
-                                onFocus={(e) => (e.target.style.borderColor = "#d4a853")}
-                                onBlur={(e) => (e.target.style.borderColor = "#2a2620")}
-                            />
-                        </div>
                     </div>
                 </div>
 
@@ -376,12 +303,16 @@ function EditModal({
 export default function DashboardPage({ navigate, user, cart, logout }: Props) {
     const [activeTab, setActiveTab] =
         useState<"overview" | "orders" | "products">("overview")
-    const [products, setProducts] = useState<Product[]>(testProds)
-    const [editing, setEditing] = useState<Product | null>(null)
+
+    // data handling
+    const { data } = useSuspenseQuery(createItemQueryOptions())
+    const [products, setProducts] = useState<Item[]>(data)
+
+    const [editing, setEditing] = useState<Item | null>(null)
 
     const maxRevenue = Math.max(...weeklyRevenue)
 
-    const handleSave = (updated: Product) => {
+    const handleSave = (updated: Item) => {
         setProducts((prev) =>
             prev.map((p) => (p.sku === updated.sku ? updated : p)),
         )
@@ -392,14 +323,13 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
     }
 
     const handleAddNew = () => {
-        const newProduct: Product = {
+        const newProduct: Item = {
             sku: `NEW-${Date.now().toString().slice(-4)}`,
             name: "New Product",
             category: "Home",
             price: 0,
-            stock: 0,
-            tag: "",
-            description: "",
+            qty: 0,
+            imageLink: "sample link"
         }
         setProducts((prev) => [newProduct, ...prev])
         setEditing(newProduct)
@@ -592,10 +522,10 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
                             </p>
                             <div className="flex flex-col gap-4">
                                 {[
-                                    { name: "Linen Overshirt", sales: 42 },
-                                    { name: "Merino Wool Throw", sales: 38 },
-                                    { name: "Côte Noire Candle", sales: 61 },
-                                    { name: "Botanical Perfume", sales: 29 },
+                                    { name: "Item1", sales: 42 },
+                                    { name: "Item2", sales: 38 },
+                                    { name: "Item3", sales: 61 },
+                                    { name: "Item4", sales: 29 },
                                 ].map((p) => (
                                     <div key={p.name}>
                                         <div className="flex justify-between mb-1">
@@ -750,7 +680,6 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
                                             "Category",
                                             "Price",
                                             "Stock",
-                                            "Tag",
                                             "",
                                         ].map((h) => (
                                             <th
@@ -801,28 +730,16 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
                                             <td className="px-5 py-3.5">
                                                 <span
                                                     style={{
-                                                        color: p.stock <= 5 ? "#d46d6d" : "#7a7060",
+                                                        color: p.qty <= 5 ? "#d46d6d" : "#7a7060",
                                                     }}
                                                 >
                                                     {/* FIXME fix this nested conditional */}
-                                                    {p.stock <= 5 && p.stock > 0
-                                                        ? `⚠ ${p.stock}`
-                                                        : p.stock === 0
+                                                    {p.qty <= 5 && p.qty > 0
+                                                        ? `⚠ ${p.qty}`
+                                                        : p.qty === 0
                                                             ? "Out of stock"
-                                                            : p.stock}
+                                                            : p.qty}
                                                 </span>
-                                            </td>
-                                            <td className="px-5 py-3.5">
-                                                {p.tag ? (
-                                                    <span
-                                                        className="px-2 py-0.5 text-xs font-semibold rounded-full"
-                                                        style={{ background: "#2e2218", color: "#d4a853" }}
-                                                    >
-                                                        {p.tag}
-                                                    </span>
-                                                ) : (
-                                                    <span style={{ color: "#3a3630" }}>—</span>
-                                                )}
                                             </td>
                                             <td className="px-5 py-3.5">
                                                 <button

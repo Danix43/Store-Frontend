@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import type { CartItem, Page, User } from "../App"
 import Navbar from "../components/Navbar"
-import { api } from "../utilities/WebRequests"
+import { createItemQueryOptions } from "../api/Utilities"
+import { useSuspenseQuery } from "@tanstack/react-query"
 
 interface Props {
     navigate: (p: Page) => void
@@ -12,31 +13,31 @@ interface Props {
 }
 
 export interface Item {
-    id: number
     name: string
+    sku: string
+    category: string
     price: number
     qty: number
-    image: string
-    category: string
-    tag: string
+    imageLink: string
 }
 
-const testProds = [
-    {
-        id: 1,
-        name: "Item1",
-        category: "Category 1",
-        price: 90,
-        image: "https://images.unsplash.com/photo-1602523961358-f9f03dd557db?w=600&h=700&fit=crop&auto=format",
-        tag: "Tag 1"
-    },
-]
+export const Categories =
+    [
+        "Category 1",
+        "Category 2",
+        "Category 3",
+        "Default",
+    ]
 
-const categories = [
-    "Category 1",
-    "Category 2",
-    "Category 3",
-]
+const resolveCategoryMapping: Function = (itemCat: string) => {
+    const catMap = new Map<string, string>()
+    catMap.set("CATEGORY1", Categories[0])
+    catMap.set("CATEGORY2", Categories[1])
+    catMap.set("CATEGORY3", Categories[2])
+    catMap.set("CATEGORY4", Categories[3])
+
+    return catMap.get(itemCat)
+}
 
 
 export default function StorePage({
@@ -47,41 +48,26 @@ export default function StorePage({
     logout,
 }: Props) {
 
-    const [products, setProducts] = useState<Item[]>([])
+    const { data } = useSuspenseQuery(createItemQueryOptions())
+    const [products, setProducts] = useState<Item[]>(data)
     const [activeCategory, setActiveCategory] = useState("All")
-    const [addedIds, setAddedIds] = useState<number[]>([])
-
-    useEffect(
-        () => {
-            const fetchItems = async () => {
-                try {
-                    const { data } = await api.get("/items/all")
-                    setProducts(data)
-                    console.log("Items fetched from api")
-                    console.log(data);
-                } catch (error) {
-                    console.error("Error fetching the item from api");
-                    console.error(error);
-                }
-            }
-            fetchItems()
-        }, [])
+    const [addedIds, setAddedIds] = useState<string[]>([])
 
     const filtered =
         activeCategory === "All"
             ? products
-            : products.filter((p) => p.category === activeCategory)
+            : products.filter((p) => resolveCategoryMapping(p.category) === activeCategory)
 
 
-    const handleAdd = (product: typeof testProds[0]) => {
+    const handleAdd = (product: typeof data[0]) => {
         addToCart({
-            id: product.id,
+            id: product.sku,
             name: product.name,
             price: product.price,
             image: product.image,
         })
-        setAddedIds((prev) => [...prev, product.id])
-        setTimeout(() => setAddedIds((prev) => prev.filter((id) => id !== product.id)), 1500)
+        setAddedIds((prev) => [...prev, product.sku])
+        setTimeout(() => setAddedIds((prev) => prev.filter((sku) => sku !== product.sku)), 1500)
     }
 
     return (
@@ -143,7 +129,23 @@ export default function StorePage({
             {/* Category filter bar */}
             <div className="max-w-7xl mx-auto px-6 pb-10">
                 <div className="flex gap-2 flex-wrap">
-                    {categories.map((cat) => (
+                    <button key={"All"}
+                        onClick={() => setActiveCategory("All")}
+                        className="px-4 py-1.5 text-sm rounded-full transition-all"
+                        style={
+                            activeCategory === "All"
+                                ? {
+                                    background: "#d4a853",
+                                    color: "#0c0b09",
+                                    fontWeight: 600
+                                }
+                                : {
+                                    border: "1px solid #2a2620",
+                                    color: "#7a7060"
+                                }}>
+                        {"All"}
+                    </button>
+                    {Categories.map((cat) => (
                         <button key={cat}
                             onClick={() => setActiveCategory(cat)}
                             className="px-4 py-1.5 text-sm rounded-full transition-all"
@@ -172,7 +174,7 @@ export default function StorePage({
                     }}>
                     {filtered.map((product) => (
                         <article
-                            key={product.id}
+                            key={product.sku}
                             className="group"
                             style={{
                                 background: "#141210",
@@ -189,11 +191,11 @@ export default function StorePage({
                                 }}
                             >
                                 <img
-                                    src={product.image}
+                                    src={product.imageLink}
                                     alt={product.name}
                                     className=" w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
-                                {product.tag && (
+                                {/* {product.tag && (
                                     <span className="absolute top-3 left-3 px-2 py-0.5 text-xs font-semibold rounded"
                                         style={{
                                             background: "#d4a853",
@@ -202,7 +204,7 @@ export default function StorePage({
                                     >
                                         {product.tag}
                                     </span>
-                                )}
+                                )} */}
                             </div>
 
                             <div className="p-4">
@@ -238,14 +240,14 @@ export default function StorePage({
                                         onClick={() => handleAdd(product)}
                                         className="text-xs px-4 py-2 rounded transition-all font-medium"
                                         style={
-                                            addedIds.includes(product.id)
+                                            addedIds.includes(product.sku)
                                                 ? { background: "#2a3d2a", color: "#6db56d" }
                                                 : {
                                                     background: "#1c1a16",
                                                     border: "1px solid #2a2620",
                                                     color: "#e8e2d4"
                                                 }}>
-                                        {addedIds.includes(product.id) ? "Added to cart" : "Add to cart"}
+                                        {addedIds.includes(product.sku) ? "Added to cart" : "Add to cart"}
                                     </button>
                                 </div>
                             </div>
