@@ -1,8 +1,8 @@
 import { useState } from "react"
 import type { Page, User } from "../App"
 import Navbar from "../components/Navbar"
-import { useSuspenseQuery } from "@tanstack/react-query"
-import { createItemQueryOptions } from "../api/Utilities"
+import { useSuspenseQueries } from "@tanstack/react-query"
+import { createItemQueryOptions, createOrdersQueryOptions } from "../api/Utilities"
 import { Categories, type Item } from "./StorePage"
 
 interface Props {
@@ -12,6 +12,26 @@ interface Props {
     logout: () => void
 }
 
+interface OrderItem {
+    qty: number,
+    sku: string,
+}
+interface Order {
+    cardCVC: number,
+    cardExpiry: string,
+    cardName: string,
+    cardNumber: string,
+    deliveryAddress: string,
+    deliveryCity: string,
+    deliveryCountry: string,
+    deliveryPostalCode: number,
+    email: string,
+    paymentType: string,
+    products: OrderItem[],
+    shipping: number,
+    subtotal: number,
+    total: number
+}
 
 // TODO add support for collections for products in orders
 const testOrders = [
@@ -305,12 +325,22 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
         useState<"overview" | "orders" | "products">("overview")
 
     // data handling
-    const { data } = useSuspenseQuery(createItemQueryOptions())
-    const [products, setProducts] = useState<Item[]>(data)
+    const [itemQuery, ordersQuery] = useSuspenseQueries({
+        queries: [
+            createItemQueryOptions(),
+            createOrdersQueryOptions()
+        ]
+    })
+
+    const [products, setProducts] = useState<Item[]>(itemQuery.data)
 
     const [editing, setEditing] = useState<Item | null>(null)
 
     const maxRevenue = Math.max(...weeklyRevenue)
+
+    const [orders, setOrders] = useState<Order[]>(ordersQuery.data);
+    // const [orders, setOrders] = useState(testOrders);
+
 
     const handleSave = (updated: Item) => {
         setProducts((prev) =>
@@ -569,32 +599,33 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
                                     }}
                                 >
                                     {[
-                                        "Order",
-                                        "Customer",
-                                        "Product",
-                                        "Date",
-                                        "Amount",
-                                        "Status",
-                                    ].map((h) => (
+                                        "Customer Email",
+                                        "Products: Quantity",
+                                        "Payment Type",
+                                        "Total",
+                                        "Delivery Country",
+                                        "Delivery City",
+                                    ].map((column) => (
                                         <th
-                                            key={h}
+                                            key={column}
                                             className="text-left px-5 py-3 text-xs uppercase tracking-wider"
                                             style={{ color: "#7a7060", fontWeight: 500 }}
                                         >
-                                            {h}
+                                            {column}
                                         </th>
                                     ))}
                                 </tr>
                             </thead>
                             <tbody>
-                                {testOrders.map((order, i) => (
+
+                                {/* table row */}
+                                {orders.map((order, i) => (
                                     <tr
-                                        key={order.id}
+                                        key={order.total}
                                         style={{
                                             background: i % 2 === 0 ? "#0f0e0c" : "#141210",
                                             borderBottom: "1px solid #1a1814",
-                                        }}
-                                    >
+                                        }}>
                                         <td
                                             className="px-5 py-3.5"
                                             style={{
@@ -603,29 +634,33 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
                                                 fontSize: "0.8rem",
                                             }}
                                         >
-                                            {order.id}
+                                            {order.email}
                                         </td>
                                         <td className="px-5 py-3.5" style={{ color: "#e8e2d4" }}>
-                                            {order.customer}
+                                            {Array.isArray(order.products) && order.products.length > 0
+                                                ? order.products
+                                                    .map(({ sku, qty }) => `${sku}:${qty}`)
+                                                    .join(", ")
+                                                : "No products"}
                                         </td>
                                         <td className="px-5 py-3.5" style={{ color: "#9a9080" }}>
-                                            {order.products}
+                                            {order.paymentType}
                                         </td>
                                         <td className="px-5 py-3.5" style={{ color: "#7a7060" }}>
-                                            {order.date}
+                                            ${order.total}
                                         </td>
                                         <td
                                             className="px-5 py-3.5"
                                             style={{ color: "#e8e2d4", fontWeight: 500 }}
                                         >
-                                            ${order.amount}
+                                            {order.deliveryCountry}
                                         </td>
                                         <td className="px-5 py-3.5">
                                             <span
                                                 className="px-2.5 py-0.5 text-xs font-semibold rounded-full"
-                                                style={statusStyle[order.status]}
+                                                style={{ color: "#7a7060" }}
                                             >
-                                                {order.status}
+                                                {order.deliveryCity}
                                             </span>
                                         </td>
                                     </tr>

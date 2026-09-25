@@ -2,6 +2,7 @@ import { useState } from "react"
 import type { Page, User } from "../App"
 import Navbar from "../components/Navbar"
 import type { Item } from "./StorePage"
+import { sendNewOrder } from "../api/Utilities"
 
 interface Props {
     navigate: (page: Page) => void
@@ -112,6 +113,30 @@ export default function CartPage({
         return errs
     }
 
+    const makeOrderPayload = (): Object => {
+        const payload = {
+            email: billing.email,
+
+            deliveryAddress: billing.address,
+            deliveryCity: billing.city,
+            deliveryPostalCode: billing.zip,
+            deliveryCountry: billing.country,
+
+            paymentType: paymentMethod.toUpperCase(),
+            cardNumber: card.number,
+            cardName: card.name,
+            cardExpiry: card.expiry,
+            cardCVC: card.cvc,
+
+            products: cart,
+            subtotal: subtotal,
+            shipping: shipping,
+            total: total,
+        }
+
+        return payload
+    }
+
     const handlePay = () => {
         const billingErrors = validateBilling()
         const cardErrors = paymentMethod === "card" ? validateCard() : {}
@@ -123,8 +148,13 @@ export default function CartPage({
 
         // no error found
         setProcessingPayment(true)
-        // simulate processing 
+
+        // simulate processing
+        const payload = makeOrderPayload()
+        console.log(payload);
+        sendNewOrder(payload)
         setTimeout(() => {
+            // could be good to send request
             setProcessingPayment(false)
             setStep("confirmed")
         }, 1400)
@@ -187,7 +217,7 @@ export default function CartPage({
                         <div className="flex flex-col gap-2 pt-4" style={{ borderTop: "1px solid #1f1d19" }}>
                             <p className="text-xs uppercase tracking-wider mb-2" style={{ color: "#7a7060" }}>Order summary</p>
                             {cart.map((item) => (
-                                <div key={item.id} className="flex justify-between">
+                                <div key={item.sku} className="flex justify-between">
                                     <span className="text-sm" style={{ color: "#9a9080" }}>
                                         {item.name} × {item.qty}
                                     </span>
@@ -685,6 +715,7 @@ export default function CartPage({
                                             <span
                                                 className="w-4 h-4 rounded-full border-2 border-t-transparent animate-spin"
                                                 style={{ borderColor: "#7a7060", borderTopColor: "transparent" }} />
+                                            {/* could be good location to send request */}
                                             Processing… {" "}
                                         </>
                                     ) : (

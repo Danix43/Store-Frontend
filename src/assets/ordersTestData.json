@@ -1,0 +1,56 @@
+[
+	{
+		"cardCVC": 273,
+		"cardExpiry": "08/27",
+		"cardName": "Emilia Novotna",
+		"cardNumber": "0011 2233 4455 6677",
+		"deliveryAddress": "Na Prikope 7",
+		"deliveryCity": "Prague",
+		"deliveryCountry": "Czech Republic",
+		"deliveryPostalCode": 11000,
+		"email": "emilia.novotna@gmail.com",
+		"paymentType": "APPLEPAY",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1006"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1008"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1005"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 209.97,
+		"total": 221.97
+	},
+	{
+		"cardCVC": null,
+		"cardExpiry": "",
+		"cardName": "",
+		"cardNumber": "",
+		"deliveryAddress": "strada",
+		"deliveryCity": "Oras",
+		"deliveryCountry": "France",
+		"deliveryPostalCode": 1122,
+		"email": "milmoi@gmail.copm",
+		"paymentType": "PAYPAL",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1002"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1003"
+			}
+		],
+		"shipping": 0.0,
+		"subtotal": 489.98,
+		"total": 489.98
+	}
+]

@@ -1,13 +1,14 @@
 import { queryOptions } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { type AxiosInstance } from "axios";
 import initialItemData from "../assets/itemsTestData.json"
+import ordersTestData from "../assets/ordersTestData.json"
 
 // TODO remove or fix the requests made by axios
-async function requestAllItems() {
-    const request = axios.create(
+function makeAxiosInstance(): AxiosInstance {
+    return axios.create(
         {
-            baseURL: import.meta.env.STORE_BACKEND_URL,
-            // baseURL: "http://localhost:8080/api",
+            // baseURL: import.meta.env.STORE_BACKEND_URL,
+            baseURL: "http://localhost:8080/api",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -16,10 +17,6 @@ async function requestAllItems() {
             timeout: 10000,
         }
     )
-
-    const { data } = await request.get("/items/all")
-    console.log(data);
-    return data
 };
 
 async function fetchAllItems() {
@@ -38,4 +35,39 @@ export function createItemQueryOptions() {
     )
 }
 
+export function createOrdersQueryOptions() {
+    return queryOptions({
+        queryKey: ["allOrders"],
+        queryFn: getAllOrders,
+        initialData: ordersTestData
+    })
+}
+
+async function getAllOrders() {
+    const axiosInstance = makeAxiosInstance();
+
+    const { data } = (await axiosInstance.get("/orders/all"));
+
+    console.log(data);
+
+    return data;
+}
+
+export async function sendNewOrder(payload: Object) {
+    const request = axios.create(
+        {
+            // baseURL: import.meta.env.STORE_BACKEND_URL,
+            baseURL: "http://localhost:8080/api",
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+            // 10 seconds for timeout
+            timeout: 10000,
+        }
+    )
+
+    const response = await request.post("/orders/newOrder", payload)
+    console.log(`Response for POST new order: ${response.data}`);
+}
 
