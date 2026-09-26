@@ -1,9 +1,504 @@
 [
 	{
+		"cardCVC": 303,
+		"cardExpiry": "09/28",
+		"cardName": "Alex Perez",
+		"cardNumber": "1234 5678 9012 3456",
+		"dateOfPurchase": "2025-01-13T22:00:00.000Z",
+		"deliveryAddress": "Strada Mica 17",
+		"deliveryCity": "Paris",
+		"deliveryCountry": "France",
+		"deliveryPostalCode": 75001,
+		"email": "alex.perez@gmail.com",
+		"paymentType": "CARD",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1001"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1002"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 139.98,
+		"total": 151.98
+	},
+	{
+		"cardCVC": 428,
+		"cardExpiry": "11/27",
+		"cardName": "Maria Ionescu",
+		"cardNumber": "2345 6789 0123 4567",
+		"dateOfPurchase": "2025-01-13T22:00:00.000Z",
+		"deliveryAddress": "Bulevardul Republicii 42",
+		"deliveryCity": "Bucharest",
+		"deliveryCountry": "Romania",
+		"deliveryPostalCode": 2000,
+		"email": "maria.ionescu@gmail.com",
+		"paymentType": "CARD",
+		"products": [
+			{
+				"qty": 2,
+				"sku": "SKU-1005"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1010"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 159.97,
+		"total": 171.97
+	},
+	{
+		"cardCVC": 512,
+		"cardExpiry": "04/29",
+		"cardName": "Daniel Muller",
+		"cardNumber": "3456 7890 1234 5678",
+		"dateOfPurchase": "2025-03-21T22:00:00.000Z",
+		"deliveryAddress": "Hauptstrasse 88",
+		"deliveryCity": "Berlin",
+		"deliveryCountry": "Germany",
+		"deliveryPostalCode": 10115,
+		"email": "daniel.muller@gmail.com",
+		"paymentType": "PAYPAL",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1003"
+			}
+		],
+		"shipping": 15.0,
+		"subtotal": 399.99,
+		"total": 414.99
+	},
+	{
+		"cardCVC": 678,
+		"cardExpiry": "06/30",
+		"cardName": "Sofia Ramos",
+		"cardNumber": "4567 8901 2345 6789",
+		"dateOfPurchase": "2025-03-21T22:00:00.000Z",
+		"deliveryAddress": "Calle Mayor 9",
+		"deliveryCity": "Madrid",
+		"deliveryCountry": "Spain",
+		"deliveryPostalCode": 28001,
+		"email": "sofia.ramos@gmail.com",
+		"paymentType": "CARD",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1004"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1006"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 199.98,
+		"total": 211.98
+	},
+	{
+		"cardCVC": 221,
+		"cardExpiry": "03/28",
+		"cardName": "Lucas Novak",
+		"cardNumber": "5678 9012 3456 7890",
+		"dateOfPurchase": "2025-05-08T21:00:00.000Z",
+		"deliveryAddress": "Vinohradska 120",
+		"deliveryCity": "Prague",
+		"deliveryCountry": "Czech Republic",
+		"deliveryPostalCode": 10000,
+		"email": "lucas.novak@gmail.com",
+		"paymentType": "APPLEPAY",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1007"
+			}
+		],
+		"shipping": 18.0,
+		"subtotal": 249.99,
+		"total": 267.99
+	},
+	{
+		"cardCVC": 990,
+		"cardExpiry": "02/29",
+		"cardName": "Elena Roman",
+		"cardNumber": "6789 0123 4567 8901",
+		"dateOfPurchase": "2025-05-08T21:00:00.000Z",
+		"deliveryAddress": "Aleea Florilor 5",
+		"deliveryCity": "Cluj-Napoca",
+		"deliveryCountry": "Romania",
+		"deliveryPostalCode": 4000,
+		"email": "elena.roman@gmail.com",
+		"paymentType": "CARD",
+		"products": [
+			{
+				"qty": 2,
+				"sku": "SKU-1008"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1005"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 199.97,
+		"total": 211.97
+	},
+	{
+		"cardCVC": 347,
+		"cardExpiry": "12/27",
+		"cardName": "Thomas Leclerc",
+		"cardNumber": "7890 1234 5678 9012",
+		"dateOfPurchase": "2025-06-17T21:00:00.000Z",
+		"deliveryAddress": "Rue de la Paix 14",
+		"deliveryCity": "Lyon",
+		"deliveryCountry": "France",
+		"deliveryPostalCode": 69002,
+		"email": "thomas.leclerc@gmail.com",
+		"paymentType": "PAYPAL",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1009"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1010"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 169.98,
+		"total": 181.98
+	},
+	{
+		"cardCVC": 664,
+		"cardExpiry": "07/31",
+		"cardName": "Nora Kovacs",
+		"cardNumber": "8901 2345 6789 0123",
+		"dateOfPurchase": "2025-06-17T21:00:00.000Z",
+		"deliveryAddress": "Kossuth Lajos utca 88",
+		"deliveryCity": "Budapest",
+		"deliveryCountry": "Hungary",
+		"deliveryPostalCode": 1052,
+		"email": "nora.kovacs@gmail.com",
+		"paymentType": "CARD",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1002"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1006"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 169.98,
+		"total": 181.98
+	},
+	{
+		"cardCVC": 755,
+		"cardExpiry": "05/29",
+		"cardName": "Pietro Rossi",
+		"cardNumber": "9012 3456 7890 1234",
+		"dateOfPurchase": "2025-08-01T21:00:00.000Z",
+		"deliveryAddress": "Via Veneto 30",
+		"deliveryCity": "Rome",
+		"deliveryCountry": "Italy",
+		"deliveryPostalCode": 187,
+		"email": "pietro.rossi@gmail.com",
+		"paymentType": "PAYPAL",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1003"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1008"
+			}
+		],
+		"shipping": 15.0,
+		"subtotal": 469.98,
+		"total": 484.98
+	},
+	{
+		"cardCVC": 214,
+		"cardExpiry": "08/28",
+		"cardName": "Charlotte Dubois",
+		"cardNumber": "0123 4567 8901 2345",
+		"dateOfPurchase": "2025-08-01T21:00:00.000Z",
+		"deliveryAddress": "Rue des Fleurs 21",
+		"deliveryCity": "Brussels",
+		"deliveryCountry": "Belgium",
+		"deliveryPostalCode": 1000,
+		"email": "charlotte.dubois@gmail.com",
+		"paymentType": "APPLEPAY",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1004"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1005"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1010"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 219.97,
+		"total": 231.97
+	},
+	{
+		"cardCVC": 833,
+		"cardExpiry": "01/30",
+		"cardName": "Mateo Garcia",
+		"cardNumber": "1122 3344 5566 7788",
+		"dateOfPurchase": "2025-09-26T21:00:00.000Z",
+		"deliveryAddress": "Gran Via 77",
+		"deliveryCity": "Barcelona",
+		"deliveryCountry": "Spain",
+		"deliveryPostalCode": 8001,
+		"email": "mateo.garcia@gmail.com",
+		"paymentType": "CARD",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1001"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1007"
+			}
+		],
+		"shipping": 18.0,
+		"subtotal": 299.98,
+		"total": 317.98
+	},
+	{
+		"cardCVC": 112,
+		"cardExpiry": "10/28",
+		"cardName": "Andreea Muntean",
+		"cardNumber": "2233 4455 6677 8899",
+		"dateOfPurchase": "2025-09-26T21:00:00.000Z",
+		"deliveryAddress": "Strada Libertatii 12",
+		"deliveryCity": "Timisoara",
+		"deliveryCountry": "Romania",
+		"deliveryPostalCode": 3000,
+		"email": "andreea.muntean@gmail.com",
+		"paymentType": "PAYPAL",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1009"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1002"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 219.98,
+		"total": 231.98
+	},
+	{
+		"cardCVC": 608,
+		"cardExpiry": "03/31",
+		"cardName": "Harper Johnson",
+		"cardNumber": "3344 5566 7788 9900",
+		"dateOfPurchase": "2025-11-10T22:00:00.000Z",
+		"deliveryAddress": "5th Avenue 101",
+		"deliveryCity": "New York",
+		"deliveryCountry": "USA",
+		"deliveryPostalCode": 10001,
+		"email": "harper.johnson@gmail.com",
+		"paymentType": "CARD",
+		"products": [
+			{
+				"qty": 2,
+				"sku": "SKU-1001"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1008"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 159.97,
+		"total": 171.97
+	},
+	{
+		"cardCVC": 431,
+		"cardExpiry": "06/29",
+		"cardName": "Joao Silva",
+		"cardNumber": "4455 6677 8899 0011",
+		"dateOfPurchase": "2025-11-10T22:00:00.000Z",
+		"deliveryAddress": "Rua da Liberdade 15",
+		"deliveryCity": "Lisbon",
+		"deliveryCountry": "Portugal",
+		"deliveryPostalCode": 1250,
+		"email": "joao.silva@gmail.com",
+		"paymentType": "PAYPAL",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1006"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1003"
+			}
+		],
+		"shipping": 15.0,
+		"subtotal": 479.98,
+		"total": 494.98
+	},
+	{
+		"cardCVC": 322,
+		"cardExpiry": "09/27",
+		"cardName": "Amelie Martin",
+		"cardNumber": "5566 7788 9900 1122",
+		"dateOfPurchase": "2025-12-15T22:00:00.000Z",
+		"deliveryAddress": "Avenue de la Republique 44",
+		"deliveryCity": "Lille",
+		"deliveryCountry": "France",
+		"deliveryPostalCode": 59000,
+		"email": "amelie.martin@gmail.com",
+		"paymentType": "CARD",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1004"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1007"
+			}
+		],
+		"shipping": 15.0,
+		"subtotal": 369.98,
+		"total": 384.98
+	},
+	{
+		"cardCVC": 540,
+		"cardExpiry": "02/30",
+		"cardName": "Victor Dumitrescu",
+		"cardNumber": "6677 8899 0011 2233",
+		"dateOfPurchase": "2025-12-15T22:00:00.000Z",
+		"deliveryAddress": "Piata Unirii 6",
+		"deliveryCity": "Iasi",
+		"deliveryCountry": "Romania",
+		"deliveryPostalCode": 7000,
+		"email": "victor.dumitrescu@gmail.com",
+		"paymentType": "APPLEPAY",
+		"products": [
+			{
+				"qty": 3,
+				"sku": "SKU-1005"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 179.97,
+		"total": 191.97
+	},
+	{
+		"cardCVC": 498,
+		"cardExpiry": "11/28",
+		"cardName": "Ruben Vanhamme",
+		"cardNumber": "7788 9900 1122 3344",
+		"dateOfPurchase": "2026-02-18T22:00:00.000Z",
+		"deliveryAddress": "Stationsstraat 60",
+		"deliveryCity": "Antwerp",
+		"deliveryCountry": "Belgium",
+		"deliveryPostalCode": 2000,
+		"email": "ruben.vanhamme@gmail.com",
+		"paymentType": "CARD",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1002"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1005"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1008"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 219.97,
+		"total": 231.97
+	},
+	{
+		"cardCVC": 181,
+		"cardExpiry": "04/30",
+		"cardName": "Laura Bianchi",
+		"cardNumber": "8899 0011 2233 4455",
+		"dateOfPurchase": "2026-02-18T22:00:00.000Z",
+		"deliveryAddress": "Corso Vittorio Emanuele 22",
+		"deliveryCity": "Milan",
+		"deliveryCountry": "Italy",
+		"deliveryPostalCode": 20100,
+		"email": "laura.bianchi@gmail.com",
+		"paymentType": "PAYPAL",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1003"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1004"
+			}
+		],
+		"shipping": 15.0,
+		"subtotal": 519.98,
+		"total": 534.98
+	},
+	{
+		"cardCVC": 756,
+		"cardExpiry": "12/29",
+		"cardName": "Simon Kowalski",
+		"cardNumber": "9900 1122 3344 5566",
+		"dateOfPurchase": "2026-04-22T21:00:00.000Z",
+		"deliveryAddress": "ul. Krakowska 12",
+		"deliveryCity": "Warsaw",
+		"deliveryCountry": "Poland",
+		"deliveryPostalCode": 400,
+		"email": "simon.kowalski@gmail.com",
+		"paymentType": "CARD",
+		"products": [
+			{
+				"qty": 1,
+				"sku": "SKU-1001"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1009"
+			},
+			{
+				"qty": 1,
+				"sku": "SKU-1010"
+			}
+		],
+		"shipping": 12.0,
+		"subtotal": 219.97,
+		"total": 231.97
+	},
+	{
 		"cardCVC": 273,
 		"cardExpiry": "08/27",
 		"cardName": "Emilia Novotna",
 		"cardNumber": "0011 2233 4455 6677",
+		"dateOfPurchase": "2026-04-22T21:00:00.000Z",
 		"deliveryAddress": "Na Prikope 7",
 		"deliveryCity": "Prague",
 		"deliveryCountry": "Czech Republic",
@@ -27,30 +522,5 @@
 		"shipping": 12.0,
 		"subtotal": 209.97,
 		"total": 221.97
-	},
-	{
-		"cardCVC": null,
-		"cardExpiry": "",
-		"cardName": "",
-		"cardNumber": "",
-		"deliveryAddress": "strada",
-		"deliveryCity": "Oras",
-		"deliveryCountry": "France",
-		"deliveryPostalCode": 1122,
-		"email": "milmoi@gmail.copm",
-		"paymentType": "PAYPAL",
-		"products": [
-			{
-				"qty": 1,
-				"sku": "SKU-1002"
-			},
-			{
-				"qty": 1,
-				"sku": "SKU-1003"
-			}
-		],
-		"shipping": 0.0,
-		"subtotal": 489.98,
-		"total": 489.98
 	}
 ]

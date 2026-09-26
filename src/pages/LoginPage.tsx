@@ -24,6 +24,7 @@ export default function LoginPage({
         // form checking
         if (!email || !password) {
             setError("Fill in all the forms")
+            return
         }
 
         setLoading(true)

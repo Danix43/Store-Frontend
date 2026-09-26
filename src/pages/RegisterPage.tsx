@@ -20,16 +20,20 @@ export default function RegisterPage({ navigate, setUser }: Props) {
         setError("")
 
         // form input checking 
+        // TODO uncomment the returns, used now for faster login
         if (!form.name || !form.email || !form.password) {
             setError("Fill all the fields in the form")
+            // return
         }
 
         if (form.password !== form.passConfirm) {
             setError("The passwords do not match")
+            // return
         }
 
         if (form.password.length < 6) {
             setError("The password must be as least 6 characters")
+            // return
         }
 
         setLoading(true)

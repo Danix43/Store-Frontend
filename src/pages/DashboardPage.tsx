@@ -2,7 +2,7 @@ import { useState } from "react"
 import type { Page, User } from "../App"
 import Navbar from "../components/Navbar"
 import { useSuspenseQueries } from "@tanstack/react-query"
-import { createItemQueryOptions, createOrdersQueryOptions } from "../api/Utilities"
+import { createItemQueryOptions, createOrdersQueryOptions, sentNewItem } from "../api/Utilities"
 import { Categories, type Item } from "./StorePage"
 
 interface Props {
@@ -30,48 +30,12 @@ interface Order {
     products: OrderItem[],
     shipping: number,
     subtotal: number,
-    total: number
+    total: number,
+    dateOfPurchase: string
 }
 
-// TODO add support for collections for products in orders
-const testOrders = [
-    {
-        id: "#Store-ORD1",
-        customer: "Customer 1",
-        products: "Item 1, Item 2",
-        status: "Delivered",
-        amount: 100,
-        date: "Sep 22, 2026",
-    },
-    {
-        id: "#Store-ORD2",
-        customer: "Customer 2",
-        products: "Item 1",
-        status: "Delivered",
-        amount: 100,
-        date: "Sep 22, 2026",
-    },
-    {
-        id: "#Store-ORD3",
-        customer: "Customer 3",
-        products: "Item 2",
-        status: "Delivered",
-        amount: 100,
-        date: "Sep 22, 2026",
-    }, {
-        id: "#Store-ORD4",
-        customer: "Customer 4",
-        products: "Item4",
-        status: "Delivered",
-        amount: 100,
-        date: "Sep 22, 2026",
-    }
-]
-
-const weeklyRevenue = [42, 68, 55, 82, 97, 74, 110]
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sun", "Sun"]
 const categories = Categories
-
 
 const statusStyle: Record<string, { bg: string, color: string }> = {
     Delivered: { bg: "#1a2e1a", color: "#6db56d" },
@@ -336,16 +300,47 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
 
     const [editing, setEditing] = useState<Item | null>(null)
 
-    const maxRevenue = Math.max(...weeklyRevenue)
 
+    const makeTotalRevenue = (orders: Order[]): number => {
+        let total = 0;
+
+        orders.forEach(ord => total += ord.subtotal)
+
+        return total
+    }
+
+    const makeAverageOrder = (orders: Order[]): number => {
+        const total = makeTotalRevenue(orders)
+
+        return total / orders.length
+    }
+
+    const makeDailyOrderAmount = (orders: Order[]): number[] => {
+        const numbers = [0, 0, 0, 0, 0, 0, 0]
+
+        orders.forEach(order => {
+            const date = new Date(order.dateOfPurchase)
+            const orderDay = date.getDay()
+
+            numbers[orderDay] += order.subtotal
+        })
+
+        return numbers
+    }
+
+    // TODO refactor this into a hook
     const [orders, setOrders] = useState<Order[]>(ordersQuery.data);
     // const [orders, setOrders] = useState(testOrders);
+    const [totalRevenue, setTotalRevenue] = useState(makeTotalRevenue(orders))
+    const [averageOrderAmount, setAverageOrderAmount] = useState(makeAverageOrder(orders))
+    const [dailyBuyAmount, setDailyBuyAmount] = useState(makeDailyOrderAmount(orders))
 
 
     const handleSave = (updated: Item) => {
         setProducts((prev) =>
             prev.map((p) => (p.sku === updated.sku ? updated : p)),
         )
+        sentNewItem(updated)
     }
 
     const handleDelete = (sku: string) => {
@@ -434,9 +429,9 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
                     }}
                 >
                     {[
-                        { label: "Revenue (Sept)", value: "$12,480", delta: "+18%" },
-                        { label: "Orders", value: "184", delta: "+12%" },
-                        { label: "Avg. Order Value", value: "$132", delta: "+4%" },
+                        { label: "Total Revenue", value: `${totalRevenue.toFixed(2)}$`, delta: null },
+                        { label: "Orders", value: String(orders.length), delta: null },
+                        { label: "Avg. Order Value", value: `${averageOrderAmount.toFixed(2)}$`, delta: null },
                         {
                             label: "Active Products",
                             value: String(products.length),
@@ -516,10 +511,10 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
                                 className="text-xs uppercase tracking-wider mb-6"
                                 style={{ color: "#7a7060" }}
                             >
-                                Weekly Revenue
+                                Best Days
                             </p>
                             <div className="flex items-end gap-3 h-40">
-                                {weeklyRevenue.map((val, i) => (
+                                {dailyBuyAmount.map((val, i) => (
                                     <div
                                         key={i}
                                         className="flex-1 flex flex-col items-center gap-2"
@@ -527,7 +522,7 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
                                         <div
                                             className="w-full rounded-t transition-all"
                                             style={{
-                                                height: `${(val / maxRevenue) * 140}px`,
+                                                height: `${(val / totalRevenue) * 300}px`,
                                                 background: i === 6 ? "#d4a853" : "#2a2620",
                                                 minHeight: "8px",
                                             }}
@@ -621,7 +616,7 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
                                 {/* table row */}
                                 {orders.map((order, i) => (
                                     <tr
-                                        key={order.total}
+                                        key={order.subtotal + order.cardCVC}
                                         style={{
                                             background: i % 2 === 0 ? "#0f0e0c" : "#141210",
                                             borderBottom: "1px solid #1a1814",

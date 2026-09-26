@@ -3,7 +3,6 @@ import axios, { type AxiosInstance } from "axios";
 import initialItemData from "../assets/itemsTestData.json"
 import ordersTestData from "../assets/ordersTestData.json"
 
-// TODO remove or fix the requests made by axios
 function makeAxiosInstance(): AxiosInstance {
     return axios.create(
         {
@@ -20,9 +19,12 @@ function makeAxiosInstance(): AxiosInstance {
 };
 
 async function fetchAllItems() {
-    const response = await fetch("http://localhost:8080/api/items/all")
+    const axiosInstance = makeAxiosInstance()
 
-    return await response.json()
+    const { data } = await axiosInstance.get("/items/all")
+    console.log(`items retrieved ${data}`);
+
+    return data;
 }
 
 export function createItemQueryOptions() {
@@ -48,8 +50,6 @@ async function getAllOrders() {
 
     const { data } = (await axiosInstance.get("/orders/all"));
 
-    console.log(data);
-
     return data;
 }
 
@@ -71,3 +71,8 @@ export async function sendNewOrder(payload: Object) {
     console.log(`Response for POST new order: ${response.data}`);
 }
 
+export async function sentNewItem(payload: Object) {
+    const axiosInstance = makeAxiosInstance();
+    const { status } = await axiosInstance.post("/items/newItem", payload)
+    console.log(`Request for saving new item returned ${status}`);
+}
