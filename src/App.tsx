@@ -10,6 +10,7 @@ export type Page = "store" | "dashboard" | "login" | "register" | "cart"
 export interface User {
     name: string
     email: string
+    password: string
 }
 
 

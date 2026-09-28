@@ -1,5 +1,6 @@
-import { useState, type ChangeEvent, type SyntheticEvent } from "react"
+import { useEffect, useState, type ChangeEvent, type SyntheticEvent } from "react"
 import type { Page, User } from "../App"
+import { sendRegisterRequest } from "../api/Utilities"
 
 interface Props {
     navigate: (page: Page) => void
@@ -37,9 +38,24 @@ export default function RegisterPage({ navigate, setUser }: Props) {
         }
 
         setLoading(true)
+
+        // send request to create account
+        const newUser = {
+            name: form.name,
+            email: form.email,
+            password: form.password
+        }
+
+        sendRegisterRequest(newUser)
+            .then((response) => {
+                console.log(`token got: ${response.token}`);
+                localStorage.setItem("apiToken", response.token)
+            })
+        console.log(`token in localStorage: ${localStorage.getItem("apiToken")}`);
+
         setTimeout(() => {
             setLoading(false)
-            setUser({ name: form.name, email: form.email })
+            setUser({ name: form.name, email: form.email, password: form.password })
             navigate("store")
         }, 800)
     }

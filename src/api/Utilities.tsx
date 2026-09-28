@@ -2,9 +2,11 @@ import { queryOptions } from "@tanstack/react-query";
 import axios, { type AxiosInstance } from "axios";
 import initialItemData from "../assets/itemsTestData.json"
 import ordersTestData from "../assets/ordersTestData.json"
+import type { User } from "../App";
 
 function makeAxiosInstance(): AxiosInstance {
-    return axios.create(
+    const authToken = localStorage.getItem("apiToken")
+    const instance = axios.create(
         {
             // baseURL: import.meta.env.STORE_BACKEND_URL,
             baseURL: "http://localhost:8080/api",
@@ -16,7 +18,17 @@ function makeAxiosInstance(): AxiosInstance {
             timeout: 10000,
         }
     )
+    if (authToken !== null) {
+        // token not null, add to request
+        instance.interceptors.request.use((config) => {
+            config.headers.set("Authorization", `Bearer ${authToken}`)
+            return config
+        })
+    }
+
+    return instance
 };
+
 
 async function fetchAllItems() {
     const axiosInstance = makeAxiosInstance()
@@ -54,20 +66,9 @@ async function getAllOrders() {
 }
 
 export async function sendNewOrder(payload: Object) {
-    const request = axios.create(
-        {
-            // baseURL: import.meta.env.STORE_BACKEND_URL,
-            baseURL: "http://localhost:8080/api",
-            headers: {
-                "Content-Type": "application/json",
-            },
+    const axiosInstance = makeAxiosInstance()
 
-            // 10 seconds for timeout
-            timeout: 10000,
-        }
-    )
-
-    const response = await request.post("/orders/newOrder", payload)
+    const response = await axiosInstance.post("/orders/newOrder", payload)
     console.log(`Response for POST new order: ${response.data}`);
 }
 
@@ -76,3 +77,23 @@ export async function sentNewItem(payload: Object) {
     const { status } = await axiosInstance.post("/items/newItem", payload)
     console.log(`Request for saving new item returned ${status}`);
 }
+
+export async function sendRegisterRequest(payload: User) {
+    const axiosInstance = makeAxiosInstance();
+
+    const { data, status } = await axiosInstance.post("/auth/register", payload)
+
+    console.log(`request to register user status: ${status}`);
+    console.log(`request to register user data: ${data}`);
+
+    return data;
+}
+
+export async function sendLoginRequest(payload: any) {
+    const axiosInstance = makeAxiosInstance()
+
+    const { data } = await axiosInstance.post("/auth/login", payload)
+
+    return data
+}
+

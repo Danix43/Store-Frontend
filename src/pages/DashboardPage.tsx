@@ -328,12 +328,11 @@ export default function DashboardPage({ navigate, user, cart, logout }: Props) {
         return numbers
     }
 
-    // TODO refactor this into a hook
-    const [orders, setOrders] = useState<Order[]>(ordersQuery.data);
+    const [orders] = useState<Order[]>(ordersQuery.data);
     // const [orders, setOrders] = useState(testOrders);
-    const [totalRevenue, setTotalRevenue] = useState(makeTotalRevenue(orders))
-    const [averageOrderAmount, setAverageOrderAmount] = useState(makeAverageOrder(orders))
-    const [dailyBuyAmount, setDailyBuyAmount] = useState(makeDailyOrderAmount(orders))
+    const [totalRevenue] = useState(makeTotalRevenue(orders))
+    const [averageOrderAmount] = useState(makeAverageOrder(orders))
+    const [dailyBuyAmount] = useState(makeDailyOrderAmount(orders))
 
 
     const handleSave = (updated: Item) => {

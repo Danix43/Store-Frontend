@@ -1,5 +1,6 @@
 import { useState, type SyntheticEvent } from "react"
 import type { Page, User } from "../App"
+import { sendLoginRequest } from "../api/Utilities"
 
 interface Props {
     navigate: (page: Page) => void
@@ -28,6 +29,15 @@ export default function LoginPage({
         }
 
         setLoading(true)
+
+        sendLoginRequest({
+            email: email,
+            password: password
+        }).then((response) => {
+            console.log(`got token from api: ${response.token}`);
+            localStorage.setItem("apiToken", response.token)
+        })
+
         setTimeout(() => {
             setLoading(false)
             // for ui testing, set the name from the email
@@ -35,7 +45,8 @@ export default function LoginPage({
                 name: email.split("@")[0]
                     .replace(".", " ")
                     .replace(/\b\w/g, (c) => c.toUpperCase()),
-                email
+                email,
+                password
             })
             navigate("store")
         }, 800)
@@ -162,7 +173,7 @@ export default function LoginPage({
                             </label>
                             <input
                                 type="password"
-                                value={email}
+                                value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="...................."
                                 className="w-full px-4 py-3 text-sm rounded-lg outline-none transition-all"
